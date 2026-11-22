@@ -68,6 +68,7 @@ if prompt := st.chat_input("导师，我有个问题..."):
             try:
                 with httpx.stream("POST", url, headers=headers, json=data, timeout=30.0) as response:
                     if response.status_code != 200:
+                        response.read()
                         yield f"\n\n⚠️ 请求失败，状态码：{response.status_code}，详情：{response.text}"
                         return
                     for line in response.iter_lines():
@@ -108,6 +109,7 @@ if prompt := st.chat_input("导师，我有个问题..."):
                 try:
                     with httpx.stream("POST", url, headers=headers, json=data, timeout=30.0) as response:
                         if response.status_code != 200:
+                            response.read()
                             yield f"\n\n⚠️ 请求失败，状态码：{response.status_code}，详情：{response.text}"
                             return
                         for line in response.iter_lines():
