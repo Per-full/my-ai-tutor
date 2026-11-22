@@ -25,11 +25,15 @@ st.set_page_config(page_title="毒舌导师", page_icon="🤖")
 st.title("🤖 毒舌 Python 导师")
 st.caption("基于 DeepSeek 大模型开发")
 
-# 2. 读取 Key (你之前配的 .env 依然生效)
-load_dotenv()
-API_KEY = os.getenv("DEEPSEEK_API_KEY")
+# 2. 读取 Key (兼容本地和云端)
+try:
+    API_KEY = st.secrets["DEEPSEEK_API_KEY"]
+except Exception:
+    load_dotenv()
+    API_KEY = os.getenv("DEEPSEEK_API_KEY")
+
 if not API_KEY:
-    st.error("未找到 API_KEY，请检查 .env 文件！")
+    st.error("未找到 API_KEY，请检查云端 Secrets 或本地 .env 文件！")
     st.stop()
 
 url = "https://api.deepseek.com/chat/completions"
